@@ -70,5 +70,5 @@ export async function callContract(params: ContractCallParams): Promise<{ txid: 
     postConditions: params.postConditions as any,
     postConditionMode: params.postConditionMode === 1 ? "deny" : "allow",
   });
-  return { txid: res.txid };
+  return { txid: (res as { txid?: string }).txid ?? "" };
 }
