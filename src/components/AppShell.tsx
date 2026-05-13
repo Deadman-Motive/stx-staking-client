@@ -1,15 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, LayoutDashboard, Shield, Network, Github } from "lucide-react";
+import { Home, LayoutDashboard, Shield, Github } from "lucide-react";
 import { ConnectButton } from "@/components/ConnectButton";
 import { useStakingData } from "@/hooks/useStakingData";
 import { Badge } from "@/components/ui/badge";
-import { useWalletStore } from "@/store/wallet";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 export function AppHeader() {
-  const { isOwner, network, paused } = useStakingData();
-  const { network: storeNet, setNetwork } = useWalletStore();
+  const { isOwner, paused } = useStakingData();
   const path = useRouterState({ select: (s) => s.location.pathname });
 
   const links = [
@@ -22,9 +19,7 @@ export function AppHeader() {
     <header className="sticky top-0 z-40 border-b border-border/40 glass-strong">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 md:px-6">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg">
-          <div className="h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center text-primary-foreground glow-primary">
-            <span className="text-sm font-black">S</span>
-          </div>
+          <img src="/logo.png" alt="StackVault" className="h-8 w-8 rounded-lg glow-primary" />
           <span className="hidden sm:inline gradient-text-primary">StackVault</span>
         </Link>
 
@@ -55,16 +50,6 @@ export function AppHeader() {
               Paused
             </Badge>
           )}
-          <div className="hidden md:flex items-center gap-2 rounded-lg border border-border/60 px-2.5 py-1.5 bg-secondary/40">
-            <Network className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="text-xs font-medium text-muted-foreground">
-              {network === "mainnet" ? "Mainnet" : "Testnet"}
-            </span>
-            <Switch
-              checked={storeNet === "mainnet"}
-              onCheckedChange={(c) => setNetwork(c ? "mainnet" : "testnet")}
-            />
-          </div>
           <ConnectButton size="sm" />
         </div>
       </div>

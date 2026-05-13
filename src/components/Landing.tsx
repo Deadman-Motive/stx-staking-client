@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 
 export function Landing() {
-  const { totalDeposited, address } = useStakingData();
+  const stakingData = useStakingData();
+  const { totalDeposited, address } = stakingData;
   const totalStx = microToStx(totalDeposited);
 
   return (
@@ -91,7 +92,11 @@ export function Landing() {
               value={`${formatStx(totalStx, 2)} STX`}
               accent="primary"
             />
-            <StatBlock label="Network" value="Stacks Mainnet" accent="violet" />
+            <StatBlock
+              label="Transactions"
+              value={`${useStakingData().txs.length}`}
+              accent="violet"
+            />
             <StatBlock
               label="Status"
               value="Active"

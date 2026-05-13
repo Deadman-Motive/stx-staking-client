@@ -1,16 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  Outlet,
-  createRootRouteWithContext,
-  useRouter,
-  HeadContent,
-  Scripts,
-  Link,
-} from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext, useRouter, Link } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 import { useEffect, useState } from "react";
 
-import appCss from "../styles.css?url";
 import { AppHeader, AppFooter } from "@/components/AppShell";
 import { useWalletHydrate } from "@/hooks/useWalletHydrate";
 
@@ -46,7 +38,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
         <div className="mt-6 flex justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="rounded-md bg-gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
           >
             Try again
@@ -61,42 +56,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "StackVault — Stake STX. Earn Real Yield." },
-      { name: "description", content: "Non-custodial STX staking on Stacks. Deposit, earn proportional rewards, withdraw any time." },
-      { property: "og:title", content: "StackVault — Stake STX. Earn Real Yield." },
-      { property: "og:description", content: "Non-custodial STX staking on Stacks." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "stylesheet", href: appCss }],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="dark">
-      <head><HeadContent /></head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function ClientGate({ children }: { children: React.ReactNode }) {
-  // Stacks/connect needs window — don't render the app shell on server.
+  // Stacks/connect needs window — only render the app shell on the client.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   useWalletHydrate();
+
   if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -104,6 +74,7 @@ function ClientGate({ children }: { children: React.ReactNode }) {
       </div>
     );
   }
+
   return <>{children}</>;
 }
 
