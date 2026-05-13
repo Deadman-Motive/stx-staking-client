@@ -27,7 +27,7 @@ export function readStoredAddress(network: NetworkMode): string | null {
       network === "testnet"
         ? stxAddrs.find((a) => a.address.startsWith("ST"))
         : stxAddrs.find((a) => a.address.startsWith("SP") || a.address.startsWith("SM"));
-    return (match ?? stxAddrs[0]).address;
+    return (match ?? stxAddrs[0]).address ?? null;
   } catch {
     return null;
   }
