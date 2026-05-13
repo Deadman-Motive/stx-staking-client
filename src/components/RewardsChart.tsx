@@ -66,7 +66,7 @@ export function RewardsChart({ range }: { range: "7d" | "30d" | "all" }) {
               color: "oklch(0.98 0.005 270)",
               backdropFilter: "blur(20px)",
             }}
-            formatter={(v: number) => [`${v.toFixed(6)} STX`, "Rewards"]}
+            formatter={(v) => [`${Number(v).toFixed(6)} STX`, "Rewards"]}
           />
           <Area
             type="monotone"
