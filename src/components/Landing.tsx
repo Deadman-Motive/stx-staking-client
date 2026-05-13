@@ -94,7 +94,7 @@ export function Landing() {
             />
             <StatBlock
               label="Transactions"
-              value={`${useStakingData().txs.length}`}
+              value={`${stakingData.txs.length}`}
               accent="violet"
             />
             <StatBlock
